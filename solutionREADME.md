@@ -1,12 +1,12 @@
 # Minimal steps to run the solution
 
-**NOTE:** Make sure you have poetry and make installed before running the below commands.
+**NOTE:** Make sure you have poetry and make installed before running the below commands. This solution currently is supported on python3.11 as the duckdb wheels are not released for updated python versions.
 
 * **git clone {github-url}** # Clone this github repository
 
 * **cd citybike-2023**  # Enter inside the codebase
 
-* **poetry install**   # ≈5 min, Create the Python environment & install deps
+* **poetry install**   # ≈2 min, Create the Python environment & install deps
 
 * **make all**         # ≈10 min, Execute the full pipeline
     * What happens:
@@ -25,6 +25,8 @@
 
 ## Additional resource to verify the work
 * There is a Screenshot folder contaning the screenshots from dbt lineage, duckdb database values based on staging, intermediate and final analysis_queries(on fact dbt tables)
+* Connect to a local duckdb server using any SQL tool like DBeaver etc. using the duckdb database file at data/duckdb/citybike_2023.duckdb and then, you will be able to query all the tables including, the analysis_queries to test out the results of deliverables.
+* Navigate to http://localhost:8080 after running `make docs` (once the `make all` has completed). You will be able to see the documentation of dbt for this project detailing each and every aspect of dbt models. 
 
 ## Some reasoning why I choose certain types of technologies
 - DuckDB: Zero‑install single‑file DB that’s columnar & vectorised — reviewers don’t need Postgres; still fast enough to scan 70 M rows locally.
