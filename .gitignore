@@ -1,0 +1,59 @@
+# ────────────────────────────── Python / Poetry ─────────────────────────────
+# Virtual‑env created by Poetry (in‑project)
+.venv/
+# Any other venvs accidentally created
+env/
+venv/
+# Byte‑code, C‑extensions, etc.
+__pycache__/
+*.py[cod]
+*.so
+# Local Poetry metadata / wheels
+*.dist-info/
+*.egg-info/
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+
+# ─────────────────────────────── dbt artefacts ──────────────────────────────
+citybike_dbt/target/          # compiled models, manifests, docs
+citybike_dbt/dbt_packages/    # packages installed by `dbt deps`
+# Optional dbt user‑level state
+dbt_modules/
+
+# ─────────────────────────────── Data outputs ───────────────────────────────
+data/raw/                     # downloaded ZIP + extracted CSVs
+data/parquet/                 # Parquet files written by Spark
+data/duckdb/                  # DuckDB database file(s)
+*.parquet
+*.duckdb
+*.zip
+*.csv
+
+# ─────────────────────────────── Spark / JVM ────────────────────────────────
+# Spark local scratch space if you changed SPARK_LOCAL_DIRS
+spark-tmp/
+# Spark event logs (if enabled)
+spark-events/
+
+# ─────────────────────────────── Docker / Build ─────────────────────────────
+# Docker build cache (if you ever enable BuildKit mounts)
+docker-cache/
+# Local image tarballs
+*.tar
+
+# ─────────────────────────────── VS Code / IDEs ─────────────────────────────
+.vscode/
+.idea/
+*.iml
+
+# ─────────────────────────────── OS / Editor cruft ──────────────────────────
+.DS_Store
+Thumbs.db
+# Vim / Emacs swap files
+*~
+.*.sw?
+# Logs & temp
+*.log
+tmp/

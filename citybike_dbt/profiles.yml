@@ -1,0 +1,7 @@
+citybike_dbt:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: ../data/duckdb/citybike_2023.duckdb
+      threads: 4

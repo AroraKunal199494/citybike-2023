@@ -1,0 +1,153 @@
+version: 2
+exposures:
+  - name: bike_share_insights_dashboard
+    type: dashboard
+    owner:
+      name: "Data Analytics Team"
+      email: "analytics.team@example.com"
+    maturity: high
+    url: "https://dashboard.example.com/citybike_insights"
+    description: >
+      This dashboard provides comprehensive insights into NYC Citi Bike usage.
+      It aggregates key metrics from our fact models including station popularity by weekday,
+      trip duration patterns by hour, and daily trip trends. The dashboard is used by stakeholders
+      across operations, planning, and marketing to monitor and optimize bike share performance.
+    depends_on:
+      - popular_stations_by_weekday
+      - trip_duration_by_hour
+      - daily_trip_trends
+models:
+  - name: dim_stations
+    description: "Station dimension storing unique station attributes from the int model."
+    columns:
+      - name: station_id
+        description: "Unique station identifier."
+        tests:
+          - not_null
+      - name: station_name
+        description: "Human-friendly station name."
+        tests:
+          - not_null
+
+  - name: dim_date
+    description: "Date dimension extracted from the trip start timestamp. Contains calendar attributes used for slicing time."
+    columns:
+      - name: ride_date
+        description: "The calendar date (YYYY-MM-DD) of the trip."
+        tests:
+          - not_null
+          - unique
+      - name: weekday
+        description: "The full weekday name (e.g., Monday, Tuesday)."
+        tests:
+          - not_null
+      - name: season
+        description: "Season label derived from the month."
+        tests:
+          - not_null
+
+  - name: dim_time
+    description: "Time dimension classifying each hour into meaningful categories (Rush Hour, Late Night, or Other)."
+    columns:
+      - name: hour
+        description: "Numeric hour (0-23) from the trip’s start timestamp."
+        tests:
+          - not_null
+          - unique
+      - name: time_of_day_category
+        description: "Categorical label describing the time of day period."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['Rush Hour', 'Late Night', 'Other']
+
+  - name: fct_popular_stations_by_weekday
+    description: "Fact model aggregating bike trip counts by station and weekday, joined with dim_date and dim_stations."
+    columns:
+      - name: station_id
+        description: "Foreign key referencing dim_stations.station_id."
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_stations')
+              field: station_id
+      - name: weekday
+        description: "Weekday name derived from the trip date."
+        tests:
+          - not_null
+      - name: total_trips
+        description: "Total number of trips for the given station and weekday."
+        tests:
+          - not_null
+      - name: station_rank
+        description: "Rank of the station on the specified weekday based on trip counts."
+        tests:
+          - not_null
+
+  - name: fct_trip_duration_by_hour
+    description: >
+      Fact model that aggregates trip duration metrics by the hour, rider type, and time-of-day category, 
+      joined with dim_time.
+    columns:
+      - name: start_hour
+        description: "The hour of day when the trip started."
+        tests:
+          - not_null
+      - name: time_of_day_category
+        description: "Time of day classification derived from dim_time."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['Rush Hour', 'Late Night', 'Other'] 
+      - name: rider_type
+        description: "Indicator of the rider category (member or casual)."
+        tests:
+          - not_null
+          - dbt_expectations.expect_column_values_to_be_in_set:
+              value_set: ['member', 'casual']
+      - name: trips_count
+        description: "Total count of trips aggregated for the grouping."
+        tests:
+          - not_null
+      - name: avg_duration_minutes
+        description: "Average trip duration in minutes."
+        tests:
+          - not_null
+      - name: median_duration_minutes
+        description: "Median trip duration in minutes."
+        tests:
+          - not_null
+
+
+  - name: fct_daily_trip_trends
+    description: >
+      Fact model providing a daily time-series view of bike trips. This model includes daily totals,
+      rolling averages (7-day & 30-day), monthly aggregates, and anomaly detection; it is joined with
+      the dim_date for additional temporal context.
+    columns:
+      - name: ride_date
+        description: "The date of the trips (from dim_date)."
+        tests:
+          - not_null
+          - unique
+          - relationships:
+              to: ref('dim_date')
+              field: ride_date
+      - name: daily_trips
+        description: "Total number of trips on a given day."
+        tests:
+          - not_null
+      - name: avg_7d_trips
+        description: "7-day rolling average of daily trips."
+        tests:
+          - not_null
+      - name: avg_30d_trips
+        description: "30-day rolling average of daily trips."
+        tests:
+          - not_null
+      - name: is_anomaly
+        description: "Flag indicating if a day's trip count is an anomaly. Values: 0 (normal), 1 (anomaly)."
+        tests:
+          - not_null
+          - accepted_values:
+              values: [0, 1]

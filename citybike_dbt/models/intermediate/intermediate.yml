@@ -1,0 +1,24 @@
+version: 2
+models:
+  - name: int_citybike__trips
+    description: "Intermediate model that transforms staging data into a business-ready dataset with derived time dimensions and metrics."
+    columns:
+      - name: trip_sk
+        description: "Surrogate key from the staging model; must be unique."
+        tests:
+          - not_null
+          - unique
+      - name: trip_date
+        description: "Normalized date (YYYY-MM-DD) derived from start_ts."
+        tests:
+          - not_null
+      - name: start_hour
+        description: "Hour when the trip started (0-23)."
+        tests:
+          - not_null
+      - name: duration_minutes
+        description: "Trip duration in minutes; calculated from the difference between end_ts and start_ts."
+        tests:
+          - not_null
+      - name: trip_distance_km
+        description: "Calculated distance between the start and end points of the trip, in kilometers."

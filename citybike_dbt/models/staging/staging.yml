@@ -1,0 +1,41 @@
+version: 2
+sources:
+  - name: citybike            # source name
+    schema: staging           # DuckDB schema where raw data lives
+    tables:
+      - name: trips_raw       # raw table name
+        description: "Raw Citi Bike trips data for 2023"
+        loaded_at_field: ended_at   # use end time as proxy for load time
+        freshness:
+          warn_after: {count: 1, period: day}
+          error_after: {count: 2, period: day}
+models:
+  - name: stg_citybike__trips
+    description: "Staging model for raw Citi Bike trip data with explicit casting, surrogate key generation, and incremental loading."
+    columns:
+      - name: trip_sk
+        description: "Surrogate key generated via dbt_utils.generate_surrogate_key."
+        tests:
+          - not_null
+          - unique
+      - name: ride_id
+        description: "Unique identifier for each ride."
+        tests:
+          - not_null
+          - unique
+      - name: start_ts
+        description: "Timestamp when the trip started."
+        tests:
+          - not_null
+      - name: end_ts
+        description: "Timestamp when the trip ended."
+        tests:
+          - not_null
+      - name: start_station_id
+        description: "Identifier for the starting station."
+      - name: member_casual
+        description: "Indicates whether the rider is a member or a casual user."
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['member', 'casual']

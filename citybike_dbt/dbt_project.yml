@@ -1,0 +1,46 @@
+# This file defines your dbt project configuration, including model paths, materializations, and source profiles.
+# It serves as the central configuration point for dbt project.
+name: citybike_dbt
+version: '1.0'
+config-version: 2
+
+# Specify the profile that stores connection settings to database
+profile: citybike_dbt
+
+# Define the directory paths for dbt resources.
+model-paths: ["models"]         
+macro-paths: ["macros"]           
+test-paths: ["tests"]             
+
+# Configure models by folder and by individual model
+models:
+  # The top-level namespace is based on the project name (citybike_dbt)
+  citybike_dbt:
+    # Global model properties (for all models in the project) can be defined here.
+    # In this case, we set the default materialization for models as 'table'.
+    +materialized: table
+
+    # Staging models generally load raw data and are used for data cleaning or transformation.
+    # Here we configure them to be materialized as views to keep the source close to raw and
+    # reduce compute overhead (views typically reflect live data, depending on use case).
+    staging:
+      +materialized: view
+      # Optionally, can add tags, owner info, or descriptions here for team collaboration.
+      # e.g. +tags: ["staging", "raw"]
+    
+    # Intermediate models transform and enrich the staging data to a business-ready format.
+    # They create key time attributes, derive metrics, and prepare data for the marts.
+    intermediate:
+      +materialized: table
+      # These can also be tagged for clarity, such as: +tags: ["intermediate", "transformation"]
+
+
+    # Mart models are analytical (fact) and dimension models.
+    # They often benefit from materialized tables due to their aggregation and performance requirements.
+    marts:
+      +materialized: table
+      # Could also specify incremental strategies, partitioning, etc.
+      # For example:
+      # +incremental_strategy: "delete+insert"
+      # +partition_by: { field: "trip_date", data_type: "date" }
+      # +tags: ["mart", "analytics"]
