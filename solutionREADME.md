@@ -1,6 +1,6 @@
 # Minimal steps to run the solution
 
-**NOTE:** Make sure you have poetry and make installed before running the below commands. This solution currently is supported on python3.11 as the duckdb wheels are not released for updated python versions.
+**NOTE:** Make sure you have poetry and make installed before running the below commands. This solution currently is supported and tested for python@3.13
 
 * **git clone {github-url}** # Clone this github repository
 
