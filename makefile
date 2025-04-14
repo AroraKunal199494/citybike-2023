@@ -40,7 +40,6 @@ test_load:
 
 ## Optional to run the data ingestion in a Docker container to ensure a consistent environment.
 ## Spark sessions utilize JAVA which is not available in the default Python environment.
-DB_FILE := data/duckdb/citybike_2023.duckd
 docker-build:
 	@echo "\nBuilding Docker image for data ingestion..."
 	docker build -t citybike_dbt:latest .

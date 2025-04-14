@@ -118,7 +118,7 @@ def csvs_to_parquet_stream(csv_files: list[pathlib.Path],
             out   = pq_dir / f"month={month}"
             logging.info("→ %s (reading %s)", out, csv.name)
             df = spark.read.option("header", True).csv(str(csv))
-            df.repartition(1).write.mode("overwrite").parquet(str(out))
+            df.repartition(4).write.mode("overwrite").parquet(str(out))
     except Exception as exc:
         logging.exception("Error during CSV-to-Parquet conversion: %s", exc)
         raise
