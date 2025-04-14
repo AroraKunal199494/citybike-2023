@@ -2,7 +2,7 @@
 
 **NOTE:** Make sure you have poetry and make installed before running the below commands.
 
-* **git clone <github-url>** # Clone this github repository
+* **git clone {github-url}** # Clone this github repository
 
 * **cd citybike-2023**  # Enter inside the codebase
 
