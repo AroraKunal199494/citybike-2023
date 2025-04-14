@@ -55,7 +55,10 @@ SELECT
     start_lng::double precision AS start_lng,
     end_lat::double precision AS end_lat,
     end_lng::double precision AS end_lng,
-    member_casual::varchar AS member_casual
+    member_casual::varchar AS member_casual,
+    -- Additional Metadata Columns
+    CURRENT_TIMESTAMP AS ingestion_ts,
+    filename::varchar AS source_file
 FROM {{ trips_raw_source }}
 WHERE ((ended_at::timestamp) - (started_at::timestamp)) >= INTERVAL '0 second'
 {% if is_incremental() %}

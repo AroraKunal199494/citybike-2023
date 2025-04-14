@@ -22,5 +22,5 @@ SELECT
   ROUND(avg_7d_trips, 1) AS avg_7d_trips, 
   ROUND(avg_30d_trips, 1) AS avg_30d_trips, 
   is_anomaly
-FROM {{ ref('fct_daily_trip_trends') }}
+FROM fct_daily_trip_trends
 ORDER BY ride_date

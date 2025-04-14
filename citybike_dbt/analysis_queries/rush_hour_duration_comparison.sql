@@ -25,7 +25,7 @@ SELECT
   MAX(CASE WHEN rider_type = 'casual' THEN median_duration_minutes END) AS casual_median_duration,
   MAX(CASE WHEN rider_type = 'casual' THEN median_duration_minutes END) - 
   MAX(CASE WHEN rider_type = 'member' THEN median_duration_minutes END) AS duration_difference
-FROM {{ ref('fct_trip_duration_by_hour') }}
+FROM fct_trip_duration_by_hour
 WHERE time_of_day_category = 'Rush Hour'
 GROUP BY start_hour, time_of_day_category
 ORDER BY start_hour

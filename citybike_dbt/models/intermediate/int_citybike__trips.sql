@@ -61,5 +61,8 @@ SELECT
     -- Derived metric: Calculate the trip distance in kilometers using a custom Haversine macro.
     {{ haversine_km('start_lat', 'start_lng', 'end_lat', 'end_lng') }} AS trip_distance_km,
     -- Derived metric: Calculate trip duration in minutes.
-    EXTRACT(epoch FROM (end_ts - start_ts)) / 60 AS duration_minutes
+    EXTRACT(epoch FROM (end_ts - start_ts)) / 60 AS duration_minutes,
+    -- Additional Metadata Columns
+    ingestion_ts,
+    source_file
 FROM {{ stg_citybike__trips }}

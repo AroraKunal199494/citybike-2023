@@ -24,5 +24,5 @@ SELECT
   trips_count, 
   ROUND(avg_duration_minutes, 2) AS avg_duration_minutes, 
   ROUND(median_duration_minutes, 2) AS median_duration_minutes
-FROM {{ ref('fct_trip_duration_by_hour') }}
+FROM fct_trip_duration_by_hour
 ORDER BY start_hour, rider_type

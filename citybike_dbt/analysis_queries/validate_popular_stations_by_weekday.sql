@@ -21,7 +21,7 @@ SELECT
   station_name, 
   total_trips, 
   station_rank
-FROM {{ ref('fct_popular_stations_by_weekday') }}
+FROM fct_popular_stations_by_weekday
 WHERE station_rank = 1
 ORDER BY 
   CASE weekday

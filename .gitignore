@@ -17,10 +17,10 @@ pip-delete-this-directory.txt
 .pytest_cache/
 
 # ─────────────────────────────── dbt artefacts ──────────────────────────────
-citybike_dbt/target/          # compiled models, manifests, docs
-citybike_dbt/dbt_packages/    # packages installed by `dbt deps`
-# Optional dbt user‑level state
 dbt_modules/
+citybike_dbt/target/ 
+citybike_dbt/dbt_packages/ 
+citybike_dbt/logs
 
 # ─────────────────────────────── Data outputs ───────────────────────────────
 data/raw/                     # downloaded ZIP + extracted CSVs

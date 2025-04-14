@@ -20,6 +20,6 @@ SELECT
   DATE_TRUNC('month', ride_date) AS month,
   MAX(month_total) AS total_rides_in_month,
   MAX(mom_percent_change) AS mom_change_percentage
-FROM {{ ref('fct_daily_trip_trends') }}
+FROM fct_daily_trip_trends
 GROUP BY DATE_TRUNC('month', ride_date)
 ORDER BY month
